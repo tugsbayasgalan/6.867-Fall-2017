@@ -1,5 +1,5 @@
 # First question for P1
-
+import csv
 import numpy as np
 from scipy.stats import multivariate_normal
 from loadParametersP1 import getData as parameters
@@ -23,13 +23,12 @@ def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss):
         num_step = 0
         difference = 100000000
 
-        while abs(difference) > threshold:
+        while abs(difference) > threshold and num_step < 10000:
             f_now = f(current_value)
             current_value -= step_size * gradient
             f_later = f(current_value)
             gradient = f_der(current_value)
             difference = f_now - f_later
-            print difference
             num_step += 1
 
         return (current_value, num_step)
@@ -101,25 +100,50 @@ func_gauss = function_gaussian(gaussMean, gaussCov)
 func_gauss_der = function_gaussian_der(gaussMean, gaussCov)
 
 
+
+def run_gauss(initial_guess, step_size, threshold):
+    result_array = []
+    print "Gaussian stuff"
+    for i in initial_guess:
+        for j in step_size:
+            for k in threshold:
+                print "Initial guess: ", i, " Step size: ", j, " Epsilon: ", k
+                value, steps = batch_gradient_descent(i, j, k, func_gauss, func_gauss_der, True)
+                print "Steps:", steps
+                print "Min value", value
+                result_array.append((i, j, k, steps, value, evaluate(value, func_gauss_der)))
+    return result_array
+
+
+def run_quad(initial_guess, step_size, threshold):
+    result_array = []
+    print "Quad stuff"
+    for i in initial_guess:
+        for j in step_size:
+            for k in threshold:
+                print "Initial guess: ", i, " Step size: ", j, " Epsilon: ", k
+                value, steps = batch_gradient_descent(i, j, k, func_quad, func_quad_der, False)
+                print "Steps:", steps
+                print "Min value", value
+                result_array.append((i, j, k, steps, value, evaluate(value, func_quad_der)))
+    return result_array
+
+
+
 # Testing
-# TODO maybe trying different initial values ??
+
 if __name__ == '__main__':
-    #print gaussMean
-    #print gaussCov
-    #print quadBowlA
-    #print quadBowlb
 
-    test_init = np.array([1.0, 1.0])
-    value, steps =  batch_gradient_descent(test_init, 0.0001, 0.001, func_quad, func_quad_der, False)
-    print "Steps:", steps
-    print "Last gradient:", evaluate(value, func_quad_der)
-    print "Min value:", evaluate(value, func_quad)
+    initial_guess = [np.array([0.0, 0.0]), np.array([1.0, 1.0]), np.array([100.0, 100.0])]
+    step_size = [0.0001, 0.00001, 0.000001]
+    threshold = [1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8]
 
-    value2, steps2 = batch_gradient_descent(test_init, 0.001, 0.0000001, func_gauss, func_gauss_der, True)
-    print "Steps:", steps2
-    print "Last gradient:", evaluate(value2, func_gauss_der)
-    print "Min value:", evaluate(value2, func_gauss)
+    value_gauss = run_gauss(initial_guess, step_size, threshold)
+    value_quad = run_quad(initial_guess, step_size, threshold)
 
-
-    step_sizes = []
-    init_guess = []
+    with open("gauss.csv", "wb") as f:
+        writer = csv.writer(f)
+        writer.writerows(value_gauss)
+    with open("quad.csv", "wb") as f:
+        writer = csv.writer(f)
+        writer.writerows(value_quad)
