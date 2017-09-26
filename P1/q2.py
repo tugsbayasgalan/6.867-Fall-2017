@@ -2,6 +2,10 @@ import numpy as np
 from scipy.stats import multivariate_normal
 from loadParametersP1 import getData as parameters
 
+def evaluate(value, f):
+    return f(value)
+
+
 # Quad bowl function
 
 def function_quad(A, b):
@@ -33,6 +37,14 @@ def function_gaussian_der(mean, cov):
         return 10000.0*multivariate_normal.pdf(x, mean, cov) * np.dot(inverse_cov, x - mean)
     return function_gaussian_der_sampler
 
+def der_finite_diff(step, f, x):
+	r = np.zeros(x.shape)
+	for i in range(x.size):
+		d = np.zeros(x.shape)
+		d[i] = float(step)
+		r[i] = (f(x+d)-f(x))/float(step)
+	return r
+
 # Initialization
 par = parameters()
 
@@ -55,7 +67,11 @@ if __name__ == '__main__':
     #print quadBowlb
 
     test_init = np.array([1.0, 1.0])
-    print "Last gradient:", evaluate(value, func_quad_der)
-    print "Min value:", evaluate(value, func_quad)
+    print "for negative gaussian:"
+    print "closed gradient:", evaluate(test_init, func_quad_der)
+    print "num value:", der_finite_diff(0.0001,func_quad,test_init)
 
+    print "for quad bowl:"
+    print "closed gradient:", evaluate(test_init, func_gauss_der)
+    print "num value:", der_finite_diff(0.0001,func_gauss,test_init)
     #print batch_gradient_descent(test_init, 0.001, 0.001, func_gauss, func_gauss_der)
