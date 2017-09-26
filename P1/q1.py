@@ -35,9 +35,6 @@ def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss):
         return (current_value, num_step)
 
 
-
-
-
     else:
 
         current_value = np.copy(init)
