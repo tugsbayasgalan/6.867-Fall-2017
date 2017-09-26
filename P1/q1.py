@@ -69,3 +69,12 @@ gaussMean = par[0]
 gaussCov = par[1]
 quadBowlA = par[2]
 quadBowlb = par[3]
+
+func_quad = function_quad(quadBowlA, quadBowlb)
+func_quad_der = function_quad_der(quadBowlA, quadBowlb)
+func_gauss = function_gaussian(gaussMean, gaussCov)
+func_gauss_der = function_gaussian_der(gaussMean, gaussCov)
+
+
+# Testing
+# TODO maybe trying different initial values ??
