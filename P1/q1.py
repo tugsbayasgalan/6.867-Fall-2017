@@ -29,6 +29,10 @@ def batch_gradient_descent(init, step_size, threshold, f, f_der):
     return (current_value, num_step)
 
 
+def evaluate(value, f):
+    return f(value)
+
+
 # Quad bowl function
 
 def function_quad(A, b):
@@ -56,8 +60,8 @@ def function_gaussian(mean, cov):
 
 def function_gaussian_der(mean, cov):
     def function_gaussian_der_sampler(x):
-        #TODO not implemented yet
-        pass
+        inverse_cov = np.linalg.inv(cov)
+        return multivariate_normal.pdf(x, mean, cov) * np.dot(inverse_cov, x - cov)
     return function_gaussian_der_sampler
 
 
@@ -78,3 +82,15 @@ func_gauss_der = function_gaussian_der(gaussMean, gaussCov)
 
 # Testing
 # TODO maybe trying different initial values ??
+if __name__ == '__main__':
+    #print gaussMean
+    #print gaussCov
+    #print quadBowlA
+    #print quadBowlb
+
+    test_init = np.array([1.0, 1.0])
+    value, steps =  batch_gradient_descent(test_init, 0.001, 0.001, func_quad, func_quad_der)
+    print "Last gradient:", evaluate(value, func_quad_der)
+    print "Min value:", evaluate(value, func_quad)
+
+    #print batch_gradient_descent(test_init, 0.001, 0.001, func_gauss, func_gauss_der)
