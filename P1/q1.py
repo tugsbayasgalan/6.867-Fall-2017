@@ -21,7 +21,7 @@ def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss):
         current_value = np.copy(init)
         gradient = f_der(current_value)
         num_step = 0
-        difference = 100000000.0
+        difference = 2*threshold
 
         while abs(difference) > threshold and num_step < 10000:
             f_now = f(current_value)
@@ -29,7 +29,7 @@ def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss):
             f_later = f(current_value)
             gradient = f_der(current_value)
             difference = f_now - f_later
-            print difference
+
             num_step += 1
 
         return (current_value, num_step)
