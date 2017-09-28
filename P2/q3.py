@@ -3,9 +3,10 @@ from scipy.stats import multivariate_normal
 from q1 import compute_X
 from q1 import max_like_vector
 from loadFittingDataP2 import getData as parameters
+import matplotlib.pyplot as plt
 
 
-def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss):
+def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss,loss):
     """
     init - initial guess
     step_size - step size for the GD
@@ -15,22 +16,23 @@ def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss):
     return x_min
 
     """
-
+    l = np.array([loss(init)])
     if gauss:
         current_value = np.copy(init)
         gradient = f_der(current_value)
         num_step = 0
         difference = 100000000.0
 
-        while abs(difference) > threshold and num_step < 1000000:
+        while abs(difference) > threshold and num_step < 100000:
             f_now = f(current_value)
             current_value -= step_size * gradient
+            l = np.append(l,loss(current_value))
             f_later = f(current_value)
             gradient = f_der(current_value)
             difference = f_now - f_later
             num_step += 1
 
-        return (current_value, num_step)
+        return (current_value, num_step,l)
 
 
     else:
@@ -78,7 +80,7 @@ def run_gauss(initial_guess, step_size, threshold):
 par = parameters(False)
 x = par[0]
 y = par[1]
-m = 1
+m = 10
 X = compute_X(x,m)
 B = max_like_vector(x,y,m)
 
@@ -87,12 +89,33 @@ loss_der = loss_function_der(X,y)
 
 if __name__ == '__main__':
 
-	b,step_count =  batch_gradient_descent(np.zeros(m+1),0.0001,1e-10,loss,loss_der,True)
+
+#	b,step_count,f1 =  batch_gradient_descent(np.zeros(m+1),0.0001,1e-10,loss,loss_der,True,loss)
+#	print "b:", b
+#	print "closed b:", B
+#	print "steps:", step_count
+#	print "loss:", loss(b)
+#	print "loss_der:", loss_der(b)
+	b,step_count,f2 =  batch_gradient_descent(np.zeros(m+1),0.1,1e-10,loss,loss_der,True,loss)
 	print "b:", b
 	print "closed b:", B
 	print "steps:", step_count
 	print "loss:", loss(b)
 	print "loss_der:", loss_der(b)
+#	b,step_count,f3 =  batch_gradient_descent(np.zeros(m+1),0.01,1e-10,loss,loss_der,True,loss)
+#	print "b:", b
+#	print "closed b:", B
+#	print "steps:", step_count
+#	print "loss:", loss(b)
+#	print "loss_der:", loss_der(b)
+
+#	plt.plot(range(len(f1)),f1,'k',label='0.0001')
+#	plt.plot(range(len(f2)),f2,'b',label='0.1')
+#	plt.plot(range(len(f3)),f3,'y',label='0.01')
+#	plt.xlabel('iterations')
+#	plt.ylabel('loss')
+#	plt.legend()
+#	plt.show()
 
 '''    initial_guess = [np.zeros(m+1), np.ones(m+1), 100*np.ones(m+1) ]
     step_size = [0.0001, 0.00001, 0.000001]

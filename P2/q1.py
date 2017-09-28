@@ -30,11 +30,13 @@ if __name__ == '__main__':
 	m = 10
 
 	r = max_like_vector(X,Y,m)
+	print r
 	xnew = np.linspace(X.min(),X.max(),300) #300 represents number of points to make between T.min and T.max
 	y = np.dot(compute_X(xnew,m),r)
 	plt.plot(X,Y,'o',xnew,y,'k')
 	plt.xlabel('x')
 	plt.ylabel('y')
+	plt.title("Linear Regression(M="+str(m)+")")
 	plt.show()
 
 
