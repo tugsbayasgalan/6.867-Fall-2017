@@ -28,9 +28,24 @@ if __name__ == '__main__':
 
 	r = max_like_vector(X,Y,m)
 	print r
+
+	plt.bar(range(1,m+1),r,align='center',alpha=0.5)
+	plt.title("Generated Weight Vector")
+	plt.ylabel("Weight")
+	plt.axhline(0, color='black', lw=2)
+	plt.show()
+
+	plt.bar(range(1,m+1),[1,1,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001],align='center',alpha=0.5)
+	plt.title("True Weight Vector")
+	plt.ylabel("Weight")
+	plt.axhline(0, color='black', lw=2)
+	plt.show()
+
+
 	xnew = np.linspace(X.min(),X.max(),300) #300 represents number of points to make between T.min and T.max
 	y = np.dot(compute_cosX(xnew,m),r)
 	plt.plot(X,Y,'o',xnew,y,'k')
+	plt.plot(xnew,[math.cos(math.pi*x)+math.cos(2*math.pi*x) for x in xnew],'y')
 	plt.xlabel('x')
 	plt.ylabel('y')
 	plt.show()
