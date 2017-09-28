@@ -2,6 +2,7 @@ import numpy as np
 from loadFittingDataP1 import getData
 from q1 import batch_gradient_descent
 import random
+import matplotlib.pyplot as plt
 # Batch Gradient Descent
 
 def loss_function(X, y):
@@ -42,11 +43,15 @@ func_loss = loss_function(X, y)
 func_loss_der = loss_function_der(X, y)
 
 value, steps = batch_gradient_descent(init, 1e-7, 1e-8, func_loss, func_loss_der, True)
-print "Value: ", value
-print "Steps: ", steps
+print "Theta for BGD: ", value
+print "Iterations: ", steps
 
-print "Approximate min: ", func_loss(value)
-print "Approximate der: ", func_loss_der(value)
+# plt.plot(store_steps, store_grads)
+# plt.ylabel("Magnitude of Gradient")
+# plt.xlabel("Number of iterations")
+# plt.title("Batch Gradient Descent")
+# plt.show()
+
 
 
 
@@ -57,6 +62,9 @@ print "Approximate der: ", func_loss_der(value)
 average_theta = np.zeros(10)
 average_iterations = 0
 average_error = 0
+
+#store_sgd_steps = []
+#store_sgd_grads = []
 
 for i in xrange(10):
     X_0 = np.copy(X[0])
@@ -85,18 +93,31 @@ for i in xrange(10):
 
         current_value -= step_function(iteration) * gradient
         gradient = stochastic_loss_der(current_value)
+        # maybe ???
+
         iteration += 1
+    #store_sgd_grads.append(np.linalg.norm(gradient))
+
 
 
 
     average_theta += current_value
     average_iterations += iteration
+
+    #store_sgd_steps.append(average_iterations/10)
     average_error += func_loss(current_value)
 
 average_theta = average_theta / 10.0
 average_iterations = average_iterations / 10.0
 average_error = average_error / 10.0
 
-print "Theta: ", average_theta
+# plt.plot(store_sgd_steps, store_sgd_grads)
+# plt.ylabel("Magnitude of Gradient")
+# plt.xlabel("Number of iterations")
+# plt.title("Stochastic Gradient Descent")
+# plt.show()
+
+
+print "Theta for SGD: ", average_theta
 print "Iterations: ", int(average_iterations)
-print "Average error function: ", average_error
+#print "Average error function: ", average_error

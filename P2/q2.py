@@ -33,7 +33,7 @@ m = 0
 b = np.ones(m+1)
 
 if __name__ == '__main__':
-    
+
     X = compute_X(x,m)
     l = loss_function(X,y)
     l_der = loss_function_der(X,y)

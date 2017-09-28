@@ -13,10 +13,9 @@ def compute_X(X,M):
 		for j in range(M+1):
 			r[i,j] = t
 			t *= X[i]
-	return r	
+	return r
 
 def max_like_vector(X,Y,M):
-	r = compute_X(X,M)
 	return np.dot(np.linalg.inv(np.dot(np.transpose(r),r)),np.dot(np.transpose(r),Y))
 
 par = parameters(False)
@@ -36,5 +35,3 @@ if __name__ == '__main__':
 	plt.xlabel('x')
 	plt.ylabel('y')
 	plt.show()
-
-

@@ -68,10 +68,14 @@ if __name__ == '__main__':
 
     test_init = np.array([1.0, 1.0])
     print "for negative gaussian:"
-    print "closed gradient:", evaluate(test_init, func_quad_der)
-    print "num value:", der_finite_diff(0.0001,func_quad,test_init)
+    print "closed gradient:", np.linalg.norm(evaluate(test_init, func_quad_der))
+    for i in [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]:
+        print "num value:", np.linalg.norm(der_finite_diff(i,func_quad,test_init))
+
 
     print "for quad bowl:"
-    print "closed gradient:", evaluate(test_init, func_gauss_der)
-    print "num value:", der_finite_diff(0.0001,func_gauss,test_init)
+    print "closed gradient:", np.linalg.norm(evaluate(test_init, func_gauss_der))
+    for i in [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0]:
+        print "num value:", np.linalg.norm(der_finite_diff(i,func_gauss,test_init))
+
     #print batch_gradient_descent(test_init, 0.001, 0.001, func_gauss, func_gauss_der)
