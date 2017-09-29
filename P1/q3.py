@@ -58,7 +58,7 @@ print y.size
 
 # Stochastic Gradient Descent
 
-def stochastic_gradient_descent(init, X, y, func, func_der, learning_rate, a, b):
+def stochastic_gradient_descent(init, X, y, threshold, func, func_der, learning_rate, a, b):
     average_theta = np.zeros(init.size)
     average_iterations = 0
     average_error = 0
@@ -75,9 +75,9 @@ def stochastic_gradient_descent(init, X, y, func, func_der, learning_rate, a, b)
         current_value = np.copy(init)
         gradient = stochastic_loss_der(current_value)
         iteration = 0
-        epsilon = 1e-3
 
-        while np.linalg.norm(gradient) > epsilon:
+
+        while np.linalg.norm(gradient) > threshold:
 
             i = random.randint(0,y.size-1)
 
@@ -173,7 +173,7 @@ def stochastic_gradient_descent(init, X, y, func, func_der, learning_rate, a, b)
 # # plt.xlabel("Number of iterations")
 # # plt.title("Stochastic Gradient Descent")
 # # plt.show()
-average_theta, average_iterations = stochastic_gradient_descent(np.ones(10), X, y, loss_function, loss_function_der, learning_rate, 1e7, 0.7)
+average_theta, average_iterations = stochastic_gradient_descent(np.ones(10), X, y, threshold, loss_function, loss_function_der, learning_rate, 1e7, 0.7)
 
 print "Theta for SGD: ", average_theta
 print "Iterations: ", average_iterations
