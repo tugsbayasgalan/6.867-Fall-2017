@@ -95,8 +95,8 @@ if __name__ == '__main__':
     # X = data[0]
     # Y = data[1]
     #
-    M = [0, 1, 2, 3, 4]
-    lambda_list = [0, 0.0001, 0.1, 0.3, 0.5, 0.7, 0.9, 0.8, 0.6]
+    M = [3]
+    lambda_list = [0.1, 0.3, 0.5, 0.7, 0.9, 0.8, 0.6]
     # # normalize = mcolors.Normalize(vmin=-2, vmax=2)
     # # colormap =cm.OrRd
     # # #plot_one(4, X, Y, true_values(X), lambda_list)
@@ -105,4 +105,4 @@ if __name__ == '__main__':
     train_X, train_Y = regressAData()
     test_X, test_Y = regressBData()
     val_X, val_Y = validateData()
-    print min_error(M, lambda_list, train_X, train_Y, val_X, val_Y)
+    print min_error(M, lambda_list, test_X, test_Y, val_X, val_Y)

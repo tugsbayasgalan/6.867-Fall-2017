@@ -24,8 +24,8 @@ def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss):
         gradient = f_der(current_value)
         num_step = 0
         difference = 2*threshold
-        # store_steps = []
-        # store_grad = []
+        store_steps = []
+        store_grad = []
 
         while abs(difference) > threshold:
             f_now = f(current_value)
@@ -34,15 +34,15 @@ def batch_gradient_descent(init, step_size, threshold, f, f_der, gauss):
             gradient = f_der(current_value)
             #print "At step: ", num_step, " gradient was: ", np.linalg.norm(gradient)
             difference = f_now - f_later
-            #print difference
-            # if num_step < 20000:
-            #     #print "At step: ", num_step, " gradient was: ", np.linalg.norm(gradient)
-            #     store_steps.append(num_step)
-            #     store_grad.append(np.linalg.norm(gradient))
+
+            if num_step < 2000:
+                #print "At step: ", num_step, " gradient was: ", np.linalg.norm(gradient)
+                store_steps.append(num_step)
+                store_grad.append(np.linalg.norm(gradient))
 
             num_step += 1
 
-        return (current_value, num_step)
+        return (store_steps, store_grad)
 
 
     else:
@@ -201,18 +201,18 @@ if __name__ == '__main__':
 
     initial_values = [np.array([0.0, 0.0]), np.array([1.0, 1.0]), np.array([5.0, 5.0]), np.array([9.0, 9.0])]
 
-    # for i in range(len(initial_values)):
-    #     store_steps, store_grad = batch_gradient_descent(initial_values[i], 0.0001, 1e-11, func_gauss, func_gauss_der, True)
-    #     if i % 4 == 0:
-    #         color = 'r'
-    #     if i % 4 == 1:
-    #         color = 'b'
-    #     if i % 4 == 2:
-    #         color = 'g'
-    #     if i % 4 == 3:
-    #         color = 'k'
-    #     plt.plot(store_steps, store_grad, color)
-    #     plt.ylabel("Magnitude of Gradient")
-    #     plt.xlabel("Number of Steps")
-    # plt.title("Changing initial values")
-    # plt.show()
+    for i in range(len(initial_values)):
+        store_steps, store_grad = batch_gradient_descent(initial_values[i], 0.0001, 1e-11, func_gauss, func_gauss_der, True)
+        if i % 4 == 0:
+            color = 'r'
+        if i % 4 == 1:
+            color = 'b'
+        if i % 4 == 2:
+            color = 'g'
+        if i % 4 == 3:
+            color = 'k'
+        plt.plot(store_steps, store_grad, color)
+        plt.ylabel("Magnitude of Gradient")
+        plt.xlabel("Number of Steps")
+    plt.title("Changing initial values")
+    plt.show()
